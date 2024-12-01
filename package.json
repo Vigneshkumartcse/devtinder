@@ -1,0 +1,18 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "A Node.js project",
+  "main": "App.js",
+  "scripts": {
+    "start": "node src/App.js",
+    "dev": "nodemon src/App.js"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "vignesh",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
