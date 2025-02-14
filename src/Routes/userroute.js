@@ -54,14 +54,26 @@ router.post("/login", async (req, res) => {
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
+
+        
+        
             throw new Error("Invalid login credentials");
         }else{
+                //cookiee
+            res.cookie("token","qwertyujkhgfertyjhgnfbrgthrgbfv");
             res.status(200).json({ message: "User logged in successfully" });   
         }
     } catch (error) {
+
         return res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 });
+
+router.get("/profile",async(req,res)=>{
+    const cookies=req.cookies;
+    console.log(cookies);
+    res.send("cookies")
+})
 
 
 router.delete("/users", async (req, res) => {
