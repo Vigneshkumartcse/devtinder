@@ -4,6 +4,7 @@ const UserModel = require("../Models/user");
 const router = express.Router();
 const signupvalidate = require("../utils/validate");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 router.use(express.json());
 
 
@@ -54,26 +55,49 @@ router.post("/login", async (req, res) => {
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-
-        
-        
-            throw new Error("Invalid login credentials");
-        }else{
-                //cookiee
-            res.cookie("token","qwertyujkhgfertyjhgnfbrgthrgbfv");
-            res.status(200).json({ message: "User logged in successfully" });   
+            return res.status(401).json({ message: "Invalid login credentials" });
         }
+
+                // Generate a token (replace this with a real JWT token)
+                const token = await jwt.sign({_id : user._id},"Kumar@2002");
+
+                //  Set secure cookie
+                res.cookie("token", token);
+        
+                return res.status(200).json({ message: "User logged in successfully" });
+        
     } catch (error) {
 
         return res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 });
 
-router.get("/profile",async(req,res)=>{
-    const cookies=req.cookies;
-    console.log(cookies);
-    res.send("cookies")
-})
+router.get("/profile", async (req, res) => {
+    try {
+        const cookies=req.cookies;
+    const {token}=cookies;
+    if(!token){
+        throw new Error("Invalid token");
+    }
+    const decoded=jwt.verify(token,"Kumar@2002");
+    const { _id } = decoded;
+    if(!_id){
+        throw new Error("Invalid token");
+    }
+    const user = await UserModel.findById(_id);
+        if (!user) {
+            throw new Error("User not found");  
+        }
+        console.log(user);
+        res.status(200).json(user);
+            
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+        
+    }
+    
+});
+
 
 
 router.delete("/users", async (req, res) => {
