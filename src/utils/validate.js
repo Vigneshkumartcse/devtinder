@@ -1,4 +1,5 @@
 const validator = require("validator");
+
 const signupvalidate = (req) => {
 
     const { firstName , lastName,email, password } = req.body;
@@ -15,4 +16,16 @@ const signupvalidate = (req) => {
 
 }
 
-module.exports = signupvalidate;
+const isUpdateValid = (req) => {
+const allowsupdates = ["firstName","lastName","email","age","skills","photoUrl","bio","gender"];
+const isValidUpdate = Object.keys(req.body).every((update) => allowsupdates.includes(update));
+if(!isValidUpdate){
+    throw new Error("Invalid update details");
+
+}
+};
+
+module.exports ={ signupvalidate,
+    isUpdateValid 
+   
+}

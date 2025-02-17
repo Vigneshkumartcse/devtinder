@@ -1,15 +1,17 @@
 const express = require('express');
 const connectdb = require("./config/database");
-const router = require("./Routes/userroute");
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
-
 const app = express();
-
 app.use(express.json());
 app.use(cookieParser());
+const authRouter = require("./Routes/auth");
+const profileRouter = require("./Routes/profile");
+const requestRouter = require("./Routes/request");
 
-app.use("/devtinder", router);
+
+app.use("/devtinder", authRouter);
+app.use("/devtinder", profileRouter);
+app.use("/devtinder", requestRouter);
 
 
 connectdb().then(() => {
