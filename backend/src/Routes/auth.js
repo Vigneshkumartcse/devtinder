@@ -36,7 +36,7 @@ authRouter.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await UserModel.findOne({
-            email
+            email:email
         });
         
         if (!user) {
