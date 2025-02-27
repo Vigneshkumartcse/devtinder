@@ -9,11 +9,13 @@ app.use(cookieParser());
 const authRouter = require("./Routes/auth");
 const profileRouter = require("./Routes/profile");
 const requestRouter = require("./Routes/request");
+const userRouter = require("./Routes/user");
 
 
 app.use("/devtinder", authRouter);
 app.use("/devtinder", profileRouter);
 app.use("/devtinder", requestRouter);
+app.use("/devtinder", userRouter);
 
 
 connectdb().then(() => {
